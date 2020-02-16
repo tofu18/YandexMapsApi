@@ -39,10 +39,9 @@ class Example(QWidget):
         if self.sender() == self.pushButton:
             self.coords = [float(self.lineEdit.text()), float(self.lineEdit_2.text())]
             self.lineEdit.clearFocus()  # Убирает выделение поля ввода
-        if self.coords[0] in range(-180, 180) and self.coords[1] in range(-90, 90):
-            self.getImage()
-            self.pixmap = QPixmap(self.map_file)
-            self.image.setPixmap(self.pixmap)
+        self.getImage()
+        self.pixmap = QPixmap(self.map_file)
+        self.image.setPixmap(self.pixmap)
 
     def changeMode(self):
         self.l = self.modes[self.comboBox.currentText()]
@@ -50,6 +49,7 @@ class Example(QWidget):
         self.showMap()
 
     def getImage(self):
+
         if self.point is None:
             map_request = f'http://static-maps.yandex.ru/1.x/?ll={self.coords[0]},{self.coords[1]}&z={self.z}&l={self.l}'
         else:
@@ -77,11 +77,13 @@ class Example(QWidget):
             response = requests.get(
                 f'https://geocode-maps.yandex.ru/1.x?geocode={text}&apikey=40d1649f-0493-4b70-98ba-98533de7710b&format=json')
             response = json.loads(response.content)
-            print(response)
             if response['response']['GeoObjectCollection']['metaDataProperty']['GeocoderResponseMetaData']['found'] != '0':
                 self.point = list(map(float,
                                       response['response']['GeoObjectCollection']['featureMember'][0]['GeoObject']['Point'][
                                           'pos'].split()))
+                self.addressLabel.setText(response['response']['GeoObjectCollection']['featureMember'][0]['GeoObject']['metaDataProperty'][
+                          'GeocoderMetaData']['Address']['formatted'])
+
                 self.coords = self.point[:]
                 self.showMap()
             self.lineEdit_3.clearFocus()
@@ -89,6 +91,7 @@ class Example(QWidget):
     def resetPoint(self):
         self.point = None
         self.lineEdit_3.clear()
+        self.addressLabel.setText('')
         self.showMap()
 
     def keyPressEvent(self, e):
