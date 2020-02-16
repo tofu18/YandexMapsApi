@@ -39,10 +39,10 @@ class Example(QWidget):
         if self.sender() == self.pushButton:
             self.coords = [float(self.lineEdit.text()), float(self.lineEdit_2.text())]
             self.lineEdit.clearFocus()  # Убирает выделение поля ввода
-
-        self.getImage()
-        self.pixmap = QPixmap(self.map_file)
-        self.image.setPixmap(self.pixmap)
+        if self.coords[0] in range(-180, 180) and self.coords[1] in range(-90, 90):
+            self.getImage()
+            self.pixmap = QPixmap(self.map_file)
+            self.image.setPixmap(self.pixmap)
 
     def changeMode(self):
         self.l = self.modes[self.comboBox.currentText()]
@@ -72,16 +72,19 @@ class Example(QWidget):
         os.remove(self.map_file)
 
     def findObject(self):
-        response = requests.get(
-            f'https://geocode-maps.yandex.ru/1.x?geocode={self.lineEdit_3.text()}&apikey=40d1649f-0493-4b70-98ba-98533de7710b&format=json')
-        response = json.loads(response.content)
-        if response['response']['GeoObjectCollection']['metaDataProperty']['GeocoderResponseMetaData']['found'] != '0':
-            self.point = list(map(float,
-                                  response['response']['GeoObjectCollection']['featureMember'][0]['GeoObject']['Point'][
-                                      'pos'].split()))
-            self.coords = self.point[:]
-            self.showMap()
-        self.lineEdit_3.clearFocus()
+        text = self.lineEdit_3.text()
+        if text != '':
+            response = requests.get(
+                f'https://geocode-maps.yandex.ru/1.x?geocode={text}&apikey=40d1649f-0493-4b70-98ba-98533de7710b&format=json')
+            response = json.loads(response.content)
+            print(response)
+            if response['response']['GeoObjectCollection']['metaDataProperty']['GeocoderResponseMetaData']['found'] != '0':
+                self.point = list(map(float,
+                                      response['response']['GeoObjectCollection']['featureMember'][0]['GeoObject']['Point'][
+                                          'pos'].split()))
+                self.coords = self.point[:]
+                self.showMap()
+            self.lineEdit_3.clearFocus()
 
     def resetPoint(self):
         self.point = None
