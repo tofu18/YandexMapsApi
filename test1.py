@@ -18,24 +18,32 @@ class Example(QWidget):
         self.lineEdit.setText('0')
         self.lineEdit_2.setText('0')
         self.z = 0
+        self.l = 'map'
+        self.modes = {'Спутник': 'sat', 'Карта': 'map', 'Гибрид': 'sat,skl'}
         self.world_size = 256
         self.showMap()
-        self.pushButton.setFocusPolicy(QtCore.Qt.NoFocus) #Выключает возможность выбора виджета с помощью клавиш, чтобы keypressevent видел нажатия стрелок
+        self.pushButton.setFocusPolicy(
+            QtCore.Qt.NoFocus)  # Выключает возможность выбора виджета с помощью клавиш, чтобы keypressevent видел нажатия стрелок
 
         self.pushButton.clicked.connect(self.showMap)
+        self.comboBox.currentTextChanged.connect(self.changeMode)
 
     def showMap(self):
         if self.sender() == self.pushButton:
             self.coords = [float(self.lineEdit.text()), float(self.lineEdit_2.text())]
-            self.lineEdit.clearFocus() #Убирает выделение поля ввода
+            self.lineEdit.clearFocus()  # Убирает выделение поля ввода
 
         self.getImage()
         self.pixmap = QPixmap(self.map_file)
         self.image.setPixmap(self.pixmap)
 
+    def changeMode(self):
+        self.l = self.modes[self.comboBox.currentText()]
+        self.comboBox.clearFocus()
+        self.showMap()
 
     def getImage(self):
-        map_request = f'http://static-maps.yandex.ru/1.x/?ll={self.coords[0]},{self.coords[1]}&z={self.z}&l=map'
+        map_request = f'http://static-maps.yandex.ru/1.x/?ll={self.coords[0]},{self.coords[1]}&z={self.z}&l={self.l}'
         response = requests.get(map_request)
 
         if not response:

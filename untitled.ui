@@ -90,6 +90,37 @@
     <string>Широта</string>
    </property>
   </widget>
+  <widget class="QComboBox" name="comboBox">
+   <property name="geometry">
+    <rect>
+     <x>350</x>
+     <y>490</y>
+     <width>101</width>
+     <height>31</height>
+    </rect>
+   </property>
+   <property name="focusPolicy">
+    <enum>Qt::ClickFocus</enum>
+   </property>
+   <property name="contextMenuPolicy">
+    <enum>Qt::DefaultContextMenu</enum>
+   </property>
+   <item>
+    <property name="text">
+     <string>Карта</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>Спутник</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>Гибрид</string>
+    </property>
+   </item>
+  </widget>
  </widget>
  <resources/>
  <connections/>
