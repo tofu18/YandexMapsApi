@@ -76,7 +76,6 @@ class Example(QWidget):
             if self.z != 0:
                 if self.coords[1] + 180 / self.world_size * 256 < 90:
                     self.coords[1] += 180 / self.world_size * 256
-                    print(1)
                     self.showMap()
         elif e.key() == Qt.Key_Down:
             if self.z != 0:
