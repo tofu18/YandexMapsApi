@@ -25,6 +25,8 @@ class Example(QWidget):
         self.modes = {'Спутник': 'sat', 'Карта': 'map', 'Гибрид': 'sat,skl'}
         self.world_size = 256
         self.showMap()
+        self.pushButton_3.setFocusPolicy(QtCore.Qt.NoFocus)
+        self.pushButton_3.clicked.connect(self.resetPoint)
         self.pushButton.setFocusPolicy(
             QtCore.Qt.NoFocus)  # Выключает возможность выбора виджета с помощью клавиш, чтобы keypressevent видел нажатия стрелок
         self.pushButton_2.setFocusPolicy(
@@ -73,12 +75,17 @@ class Example(QWidget):
         response = requests.get(
             f'https://geocode-maps.yandex.ru/1.x?geocode={self.lineEdit_3.text()}&apikey=40d1649f-0493-4b70-98ba-98533de7710b&format=json')
         response = json.loads(response.content)
-        self.point = list(map(float,
-                              response['response']['GeoObjectCollection']['featureMember'][0]['GeoObject']['Point'][
-                                  'pos'].split()))
-        self.coords = self.point[:]
-        print(self.point)
+        if response['response']['GeoObjectCollection']['metaDataProperty']['GeocoderResponseMetaData']['found'] != '0':
+            self.point = list(map(float,
+                                  response['response']['GeoObjectCollection']['featureMember'][0]['GeoObject']['Point'][
+                                      'pos'].split()))
+            self.coords = self.point[:]
+            self.showMap()
         self.lineEdit_3.clearFocus()
+
+    def resetPoint(self):
+        self.point = None
+        self.lineEdit_3.clear()
         self.showMap()
 
     def keyPressEvent(self, e):
