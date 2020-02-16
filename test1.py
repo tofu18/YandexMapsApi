@@ -1,10 +1,11 @@
 import os
 import sys
 import requests
-from PyQt5 import uic
+import json
+from PyQt5 import uic, QtCore
 from PyQt5.QtGui import QPixmap
-from PyQt5.QtWidgets import QApplication, QWidget, QLabel
-
+from PyQt5.QtWidgets import QApplication, QWidget, QLabel, QLineEdit
+from PyQt5.QtCore import Qt
 
 
 class Example(QWidget):
@@ -14,21 +15,28 @@ class Example(QWidget):
         self.image = QLabel(self)
         self.image.move(20, 0)
         self.image.resize(500, 400)
+        self.coords = [0, 0]
         self.lineEdit.setText('0')
         self.lineEdit_2.setText('0')
-
-        self.z = 5
+        self.z = 0
+        self.world_size = 256
         self.showMap()
+        self.pushButton.setFocusPolicy(QtCore.Qt.NoFocus) #Выключает возможность выбора виджета с помощью клавиш, чтобы keypressevent видел нажатия стрелок
+
         self.pushButton.clicked.connect(self.showMap)
 
     def showMap(self):
-        self.coords = self.lineEdit.text() + ',' + self.lineEdit_2.text()
+        if self.sender() == self.pushButton:
+            self.coords = [float(self.lineEdit.text()), float(self.lineEdit_2.text())]
+            self.lineEdit.clearFocus() #Убирает выделение поля ввода
+
         self.getImage()
         self.pixmap = QPixmap(self.map_file)
         self.image.setPixmap(self.pixmap)
 
+
     def getImage(self):
-        map_request = f'http://static-maps.yandex.ru/1.x/?ll={self.coords}&z={self.z}&l=map&size=500,350'
+        map_request = f'http://static-maps.yandex.ru/1.x/?ll={self.coords[0]},{self.coords[1]}&z={self.z}&l=map'
         response = requests.get(map_request)
 
         if not response:
@@ -43,18 +51,41 @@ class Example(QWidget):
             file.write(response.content)
 
     def closeEvent(self, event):
-        """При закрытии формы подчищаем за собой"""
         os.remove(self.map_file)
 
     def keyPressEvent(self, e):
-        key = e.key()
-        if key == 16777238:
+
+        if e.key() == 16777238:
             if self.z <= 16:
                 self.z += 1
+                self.world_size *= 2
                 self.showMap()
-        elif key == 16777239:
+        elif e.key() == 16777239:
             if self.z >= 1:
                 self.z -= 1
+                self.world_size /= 2
+                self.showMap()
+        elif e.key() == Qt.Key_Up:
+            if self.z != 0:
+                if self.coords[1] + 180 / self.world_size * 256 < 90:
+                    self.coords[1] += 180 / self.world_size * 256
+                    print(1)
+                    self.showMap()
+        elif e.key() == Qt.Key_Down:
+            if self.z != 0:
+                if self.coords[1] - 180 / self.world_size * 256 > -90:
+                    self.coords[1] -= 180 / self.world_size * 256
+                    print(1)
+                    self.showMap()
+
+        elif e.key() == Qt.Key_Left:
+            if self.z != 0:
+                if self.coords[0] - 360 / self.world_size * 256 > -180:
+                    self.coords[0] -= 360 / self.world_size * 256
+                    self.showMap()
+        elif e.key() == Qt.Key_Right:
+            if self.coords[0] + 360 / self.world_size * 256 < 180:
+                self.coords[0] += 360 / self.world_size * 256
                 self.showMap()
 
 

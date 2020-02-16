@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>533</width>
-    <height>480</height>
+    <width>554</width>
+    <height>546</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -16,18 +16,27 @@
   <widget class="QLineEdit" name="lineEdit">
    <property name="geometry">
     <rect>
-     <x>30</x>
-     <y>400</y>
+     <x>20</x>
+     <y>440</y>
      <width>121</width>
      <height>21</height>
     </rect>
+   </property>
+   <property name="focusPolicy">
+    <enum>Qt::ClickFocus</enum>
+   </property>
+   <property name="contextMenuPolicy">
+    <enum>Qt::NoContextMenu</enum>
+   </property>
+   <property name="inputMethodHints">
+    <set>Qt::ImhNoEditMenu</set>
    </property>
   </widget>
   <widget class="QLabel" name="label">
    <property name="geometry">
     <rect>
-     <x>30</x>
-     <y>370</y>
+     <x>20</x>
+     <y>410</y>
      <width>171</width>
      <height>21</height>
     </rect>
@@ -39,11 +48,14 @@
   <widget class="QPushButton" name="pushButton">
    <property name="geometry">
     <rect>
-     <x>200</x>
-     <y>420</y>
+     <x>190</x>
+     <y>490</y>
      <width>121</width>
      <height>41</height>
     </rect>
+   </property>
+   <property name="focusPolicy">
+    <enum>Qt::NoFocus</enum>
    </property>
    <property name="text">
     <string>Отобразить карту</string>
@@ -52,18 +64,24 @@
   <widget class="QLineEdit" name="lineEdit_2">
    <property name="geometry">
     <rect>
-     <x>30</x>
-     <y>450</y>
+     <x>20</x>
+     <y>500</y>
      <width>113</width>
      <height>20</height>
     </rect>
+   </property>
+   <property name="focusPolicy">
+    <enum>Qt::ClickFocus</enum>
+   </property>
+   <property name="contextMenuPolicy">
+    <enum>Qt::NoContextMenu</enum>
    </property>
   </widget>
   <widget class="QLabel" name="label_2">
    <property name="geometry">
     <rect>
-     <x>30</x>
-     <y>430</y>
+     <x>20</x>
+     <y>470</y>
      <width>47</width>
      <height>13</height>
     </rect>
