@@ -1,7 +1,6 @@
 import os
 import sys
 import requests
-import json
 from PyQt5 import uic, QtCore
 from PyQt5.QtGui import QPixmap
 from PyQt5.QtWidgets import QApplication, QWidget, QLabel, QLineEdit
