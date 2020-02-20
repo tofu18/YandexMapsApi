@@ -37,7 +37,7 @@
     <rect>
      <x>20</x>
      <y>460</y>
-     <width>171</width>
+     <width>121</width>
      <height>21</height>
     </rect>
    </property>
@@ -48,7 +48,7 @@
   <widget class="QPushButton" name="pushButton">
    <property name="geometry">
     <rect>
-     <x>180</x>
+     <x>160</x>
      <y>510</y>
      <width>121</width>
      <height>31</height>
@@ -93,7 +93,7 @@
   <widget class="QComboBox" name="comboBox">
    <property name="geometry">
     <rect>
-     <x>190</x>
+     <x>170</x>
      <y>470</y>
      <width>101</width>
      <height>31</height>
@@ -124,7 +124,7 @@
   <widget class="QLineEdit" name="lineEdit_3">
    <property name="geometry">
     <rect>
-     <x>330</x>
+     <x>310</x>
      <y>520</y>
      <width>113</width>
      <height>20</height>
@@ -137,7 +137,7 @@
   <widget class="QLabel" name="label_3">
    <property name="geometry">
     <rect>
-     <x>350</x>
+     <x>330</x>
      <y>500</y>
      <width>101</width>
      <height>16</height>
@@ -150,7 +150,7 @@
   <widget class="QPushButton" name="pushButton_2">
    <property name="geometry">
     <rect>
-     <x>330</x>
+     <x>310</x>
      <y>460</y>
      <width>111</width>
      <height>31</height>
@@ -186,11 +186,24 @@
      <x>10</x>
      <y>420</y>
      <width>541</width>
-     <height>20</height>
+     <height>31</height>
     </rect>
    </property>
    <property name="text">
     <string/>
+   </property>
+  </widget>
+  <widget class="QRadioButton" name="radioButton">
+   <property name="geometry">
+    <rect>
+     <x>390</x>
+     <y>430</y>
+     <width>151</width>
+     <height>16</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Показывать индекс</string>
    </property>
   </widget>
  </widget>

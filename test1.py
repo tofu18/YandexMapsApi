@@ -34,6 +34,7 @@ class Example(QWidget):
 
         self.pushButton.clicked.connect(self.showMap)
         self.comboBox.currentTextChanged.connect(self.changeMode)
+        self.radioButton.toggled.connect(self.findObject)
 
     def showMap(self):
         if self.sender() == self.pushButton:
@@ -64,7 +65,13 @@ class Example(QWidget):
             sys.exit(1)
 
         # Запишем полученное изображение в файл.
-        self.map_file = "map.png"
+        if self.comboBox.currentText() == 'Карта':
+            self.map_file = "map.png"
+        if self.comboBox.currentText() == 'Спутник':
+            self.map_file = "map.jpg"
+        if self.comboBox.currentText() == 'Гибрид':
+            self.map_file = "map.jpg"
+
         with open(self.map_file, "wb") as file:
             file.write(response.content)
 
@@ -81,12 +88,23 @@ class Example(QWidget):
                 self.point = list(map(float,
                                       response['response']['GeoObjectCollection']['featureMember'][0]['GeoObject']['Point'][
                                           'pos'].split()))
+                if self.radioButton.isChecked():
+                    try:
+                        toponym = response["response"]["GeoObjectCollection"]['featureMember'][0][
+                            'GeoObject']
+                        toponym = '\nИндекс: ' + toponym['metaDataProperty']['GeocoderMetaData']['Address']['postal_code']
+                    except Exception:
+                        toponym = ''
+                else:
+                    toponym = ''
                 self.addressLabel.setText(response['response']['GeoObjectCollection']['featureMember'][0]['GeoObject']['metaDataProperty'][
-                          'GeocoderMetaData']['Address']['formatted'])
-
+                          'GeocoderMetaData']['Address']['formatted'] + toponym)
+                # Великий Новгород, Парковая 18
                 self.coords = self.point[:]
                 self.showMap()
             self.lineEdit_3.clearFocus()
+    def onClicked(self):
+        print(123)
 
     def resetPoint(self):
         self.point = None
